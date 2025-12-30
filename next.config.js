@@ -1,11 +1,18 @@
 const withMDX = require("@next/mdx")();
 
-module.exports = withMDX({
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // 1. 强制开启静态导出模式，这会生成 Cloudflare Pages 所需的 "out" 文件夹
+  output: 'export', 
+
   pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
   experimental: {
     mdxRs: true,
   },
+
   images: {
+    // 2. 必须关闭图片优化，因为静态导出不支持 Next.js 默认的图片处理服务
+    unoptimized: true, 
     minimumCacheTTL: 2678400,
     remotePatterns: [
       {
@@ -35,7 +42,10 @@ module.exports = withMDX({
       },
     ],
   },
-  redirects() {
+
+  // 3. 注意：静态导出 (output: 'export') 模式下不支持 redirects() 函数。
+  // 如果你需要重定向，建议在 Cloudflare 控制台或通过 _redirects 文件配置。
+  /* redirects() {
     return [
       {
         source: "/essays/:nested*",
@@ -49,4 +59,7 @@ module.exports = withMDX({
       },
     ];
   },
-});
+  */
+};
+
+module.exports = withMDX(nextConfig);
