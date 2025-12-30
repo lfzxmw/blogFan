@@ -1,0 +1,7 @@
+{
+  "openai": 2500000,
+  "ai": 1800000,
+  "langchain": 1200000,
+  "@tensorflow/tfjs": 800000,
+  "brain.js": 400000
+}
